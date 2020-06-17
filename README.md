@@ -26,6 +26,17 @@ To have a specific rule run on certain nodes, please add the rule to kif.yaml, a
         maxage:      30m
     kill:           true
     killwith: 9
+  
+  httpd_but_not_tlpserver:
+    description:         'httpd too many backend connections (pool filling up?)'
+    host_must_not_match: 'tlp-.+'
+    procid:              '/usr/sbin/apache2'
+    # Use combine: true to combine the resource of multiple processes into one check.
+    combine:             true
+    triggers:
+        maxlocalconns:   1000
+    runlist:
+        - 'service apache2 restart'
 ~~~
 
 Both `host_must_match` and `host_must_not_match` are regular expressions and must match the full hostname.
