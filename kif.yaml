@@ -1,0 +1,83 @@
+rules:
+    loggy:
+        description:     'loggy hogging all the memory'
+        procid:
+            - 'python2.7'
+            - 'loggy.py'
+            - '--daemonize'
+            - '--user=root'
+            - '--group=root'
+        triggers:
+            maxmemory:   1024mb
+        runlist:
+            - 'service loggy restart'
+        notify: none
+    postfix:
+        description:     'postfix memory hogging prevention'
+        procid:          '/usr/lib/postfix/master'
+        triggers:
+            maxmemory:   50%
+            maxfds:      10240
+        runlist:
+            - 'service postfix restart'
+    slapd:
+        description:     'LDAP memory hogging prevention'
+        procid:          '/usr/sbin/slapd'
+        triggers:
+            maxmemory:   50%
+            maxfds:      1024
+        runlist:
+            - 'service slapd restart'
+    elastic:
+        description:     'Snappy ElasticSearch OOM'
+        procid:          '/etc/elasticsearch/asful'
+        triggers:
+            maxmemory:   40gb
+            maxfds:      99999
+        runlist:
+            - 'service elasticsearch-asful restart'
+    httpd:
+        description:     'httpd too many backend connections (pool filling up?)'
+        procid: '/usr/sbin/apache2'
+        # Use combine: true to combine the resource of multiple processes into one check.
+        combine:            true
+        triggers:
+            maxlocalconns:  1000
+        runlist:
+            - 'service apache2 restart'
+    gitwebzombies:
+        description:    'Any gitweb process caught in zombie mode'
+        procid:         '/usr/bin/git'
+        triggers:
+            # This can be any process state (zombie, sleeping, running, etc)
+            # Or a git process > 30 minutes old.
+            state:      'zombie'
+            maxage:      30m
+        kill:           true
+        killwith: 9
+
+    jenkins_node_hung_processes:
+        host_must_match:  "asf9\\d+.gq1.ygridcore.net"
+        description: "kill -9 jenkins procs that are hanging"
+        procid: ""
+        uid: jenkins
+        # Find all processes created more than 36 hours ago.
+        triggers:
+            maxage: 36h
+        # Ignore a subset of jenkins processes
+        # including the slave jar and the remote master ssh connection
+        ignorematch:
+            - remoting.jar
+            - sshd
+            - systemd
+            - sd-pam
+        # Kill it with signal 9
+        kill:           true
+        killwith:       9
+        # notify via email to keep an eye on what's getting kiffed
+        notify: email
+
+notifications:
+    email:
+        rcpt:  'private@infra.apache.org'
+        from:  'KIF <kif@apache.org>'
