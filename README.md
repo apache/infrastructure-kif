@@ -14,7 +14,7 @@ pipservice:
 
 To have a specific rule run on certain nodes, please add the rule to kif.yaml, and make use of `host_must_match` or `host_must_not_match` definitions to narrow down where to run the rule-set, like so:
 
-~~~
+~~~yaml
   zombies_on_gitbox:
     description:    'Any gitweb process caught in zombie mode'
     host_must_match: gitbox.apache.org
