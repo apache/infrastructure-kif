@@ -1,0 +1,11 @@
+[Unit]
+Description=KIF Janitorial Application
+ 
+[Service]
+Type=simple
+WorkingDirectory=/opt/kif
+ExecStart=/usr/local/bin/pipenv run python3 kif.py
+Restart=always
+ 
+[Install]
+WantedBy=multi-user.target
