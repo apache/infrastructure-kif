@@ -15,8 +15,7 @@ and act accordingly, either running a custom command (such as restarting
 a service) or killing it with any preferred signal. It can also notify
 you of issues found and actions taken, either via email or hipchat.
 
-See [kif.sample.yaml](kif.sample.yaml) for example configuration and
-features.
+See [kif.yaml](kif.yaml) for example configuration and features.
 
 ### Requirements:
 - python 3.6 or higher
