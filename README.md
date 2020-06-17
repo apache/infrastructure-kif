@@ -1,4 +1,4 @@
-# infrastructure-kif
+# KIF - Kill It (with) Fire
 ## A simple find-and-fix program with a yaml configuration
 
 Kif is a simple monitoring program that detects programs running amok
@@ -17,16 +17,16 @@ you of issues found and actions taken, either via email or hipchat.
 
 See [kif.yaml](kif.yaml) for example configuration and features.
 
-### Requirements:
+### Requirements
 - python 3.6 or higher
 - python-yaml
 - python-psutil
 - asfpy
 
-### Installation and use:
+### Installation and use
 - Download Kif
 - Make a kif.yaml configuration (see the [example](kif.yaml))
-- Install the yaml and psutil module for python (either via package manager or pip)
+- Install the dependencies with: `pip3 install -r requirements.txt` (or use pipenv)
 - Run as root (required to both read usage and restart services).
 - Enjoy!
 
