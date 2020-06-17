@@ -40,4 +40,4 @@ To have a specific rule run on certain nodes, please add the rule to kif.yaml, a
 ~~~
 
 Both `host_must_match` and `host_must_not_match` are regular expressions and must match the full hostname.
-Be sure to use double escaping for keywords, for instance `\\d` instead of `\d`, or the yaml will break.
+Be sure to use double escaping for keywords, for instance `\\d` instead of `\d`, or the yaml will break. The must/must-not can also be used in combination to include some nodes and rule out others.
