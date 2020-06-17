@@ -42,8 +42,33 @@ MB = (2 ** 20)
 GB = (2 ** 30)
 TB = (2 ** 40)
 
+# Helper func
+def whoami():
+    """Returns the FQDN of the box the program runs on"""
+    try:
+        # Get local hostname (what you see in the terminal)
+        local_hostname = socket.gethostname()
+        # Get all address info segments for the local host
+        canonical_names = [
+            address[3] for address in
+            socket.getaddrinfo(local_hostname, None, 0, socket.SOCK_DGRAM, 0, socket.AI_CANONNAME)
+            if address[3]
+        ]
+        # For each canonical name, see if we find $local_hostname.something.tld, and if so, return that.
+        if canonical_names:
+            prefix = f"{local_hostname}."
+            for name in canonical_names:
+                if name.startswith(prefix):
+                    return name
+            # No match, just return the first occurrence.
+            return canonical_names[0]
+    except socket.error:
+        pass
+    # Fall back to socket.getfqdn
+    return socket.getfqdn()
+
 # hostname, pid file etc
-ME = socket.gethostname()
+ME = whoami()
 TEMPLATE_EMAIL = open("email_template.txt", "r").read()
 # Default to checking triggers every N seconds.
 DEFAULT_INTERVAL = 300
