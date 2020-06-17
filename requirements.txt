@@ -1,0 +1,4 @@
+requests>=2.23.0
+asfpy>=0.20
+psutil>=5.7.0
+PyYAML>=5.3.1
