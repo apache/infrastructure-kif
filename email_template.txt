@@ -1,0 +1,12 @@
+Hullo there,
+
+KIF has detected the following issues on {ME}:
+
+{triggers}
+
+As a precaution, the following commands were run to fix issues:
+
+{actions}
+
+With regards and sighs,
+Your loyal KIF service.
