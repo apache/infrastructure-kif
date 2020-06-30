@@ -494,9 +494,9 @@ def main():
     args = parser.parse_args()
 
     if not args.config:
-        config = yaml.load(open("kif.yaml"), Loader=yaml.FullLoader)
+        config = yaml.safe_load(open("kif.yaml"))
     else:
-        config = yaml.load(open(args.config), Loader=yaml.FullLoader)
+        config = yaml.safe_load(open(args.config))
 
     if os.getuid() != 0:
         print("Kif must be run as root!")
