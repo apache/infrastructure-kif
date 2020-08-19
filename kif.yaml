@@ -68,6 +68,7 @@ rules:
         # including the slave jar and the remote master ssh connection
         ignorematch:
             - remoting.jar
+            - slave.jar
             - sshd
             - systemd
             - sd-pam
