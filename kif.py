@@ -148,10 +148,10 @@ def getprocs():
 
 
 def checkTriggers(id, info, triggers, dead=False):
-    if len(triggers) > 0:
-        print("  - Checking triggers:")
+    # if len(triggers) > 0:
+        # print("  - Checking triggers:")
     for trigger, value in triggers.items():
-        print("    - Checking against trigger %s" % trigger)
+        # print("    - Checking against trigger %s" % trigger)
 
         # maxmemory: Process can max use N amount of memory or it triggers
         if trigger == 'maxmemory':
@@ -262,20 +262,20 @@ def scan_for_triggers(config):
 
     # For each rule..
     for id, rule in config['rules'].items():
-        print("- Running rule %s" % id)
+        # print("- Running rule %s" % id)
         # Is this process running here?
         pids = []
         if 'host_must_match' in rule:
             if not re.match(rule['host_must_match'], ME):
-                print(f"Ignoring rule-set '{id}', hostname '{ME}' does not match host_must_match criterion.")
+                # print(f"Ignoring rule-set '{id}', hostname '{ME}' does not match host_must_match criterion.")
                 continue
         if 'host_must_not_match' in rule:
             if re.match(rule['host_must_not_match'], ME):
-                print(f"Ignoring rule-set '{id}', hostname '{ME}' matches host_must_not_match criterion.")
+                # print(f"Ignoring rule-set '{id}', hostname '{ME}' matches host_must_not_match criterion.")
                 continue
         if 'procid' in rule:
             procid = rule['procid']
-            print("  - Checking for process %s" % procid)
+            # print("  - Checking for process %s" % procid)
             for xpid, cmdline in procs.items():
                 cmdstring = " ".join(cmdline)
                 addit = False
@@ -301,19 +301,19 @@ def scan_for_triggers(config):
                         try:
                             ppid = int(open(rule['ignorepidfile']).read())
                             if ppid == xpid:
-                                print("Ignoring %u, matches pid file %s!" % (ppid, rule['ignorepidfile']))
+                                # print("Ignoring %u, matches pid file %s!" % (ppid, rule['ignorepidfile']))
                                 addit = False
                         except Exception as err:
                             print(err)
                     if 'ignorematch' in rule:
                         ignm = rule['ignorematch']
                         if isinstance(ignm, str) and ignm in cmdstring:
-                            print("Ignoring %u, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
+                            # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
                             addit = False
                         elif isinstance(ignm, list):
                             for line in ignm:
                                 if line in cmdstring:
-                                    print("Ignoring %u, matches ignorematch directive %s!" % (xpid, line))
+                                    # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, line))
                                     addit = False
                                     break
                     if addit:
@@ -334,19 +334,19 @@ def scan_for_triggers(config):
                         try:
                             ppid = int(open(rule['ignorepidfile']).read())
                             if ppid == xpid:
-                                print("Ignoring %u, matches pid file %s!" % (ppid, rule['ignorepidfile']))
+                                # print("Ignoring %u, matches pid file %s!" % (ppid, rule['ignorepidfile']))
                                 addit = False
                         except Exception as err:
                             print(err)
                     if 'ignorematch' in rule:
                         ignm = rule['ignorematch']
                         if isinstance(ignm, str) and ignm in cmdstring:
-                            print("Ignoring %u, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
+                            # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
                             addit = False
                         elif isinstance(ignm, list):
                             for line in ignm:
                                 if line in cmdstring:
-                                    print("Ignoring %u, matches ignorematch directive %s!" % (xpid, line))
+                                    # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, line))
                                     addit = False
                                     break
                     if addit:
@@ -355,7 +355,7 @@ def scan_for_triggers(config):
         # If proc is running, analyze it
         analysis = ProcessInfo()  # no pid. accumulator.
         for pid in pids:
-            print("  - Found process at PID %u" % pid)
+            # print("  - Found process at PID %u" % pid)
 
             try:
                 # Get all relevant data from this PID
@@ -410,7 +410,8 @@ def scan_for_triggers(config):
                     action['trigger'] = err
                     actions.append(action)
         else:
-            print("  - No matching processes found")
+            pass
+            # print("  - No matching processes found")
 
     return actions
 
@@ -514,7 +515,7 @@ def main():
             actions = scan_for_triggers(config)
             if actions:
                 run_actions(config, actions, args.debug)
-        print(f'KIF run finished, waiting {interval} seconds till next run.')
+        # print(f'KIF run finished, waiting {interval} seconds till next run.')
         time.sleep(interval)
 
 
