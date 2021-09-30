@@ -128,3 +128,4 @@ Be sure to use double escaping for keywords, for instance `\\d` instead of `\d`,
 
 - `--debug`: Run in debug mode - detect but don't try to fix issues.
 - `--config $filename`: path to config file.
+
