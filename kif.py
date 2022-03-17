@@ -43,7 +43,7 @@ GB = (2 ** 30)
 TB = (2 ** 40)
 
 # Helper func
-def whoami():
+def who_am_i():
     """Returns the FQDN of the box the program runs on"""
     try:
         # Get local hostname (what you see in the terminal)
@@ -68,7 +68,7 @@ def whoami():
     return socket.getfqdn()
 
 # hostname, pid file etc
-ME = whoami()
+ME = who_am_i()
 TEMPLATE_EMAIL = open("email_template.txt", "r").read()
 # Default to checking triggers every N seconds.
 DEFAULT_INTERVAL = 300
@@ -482,7 +482,7 @@ def run_actions(config, actions, debug=False):
         ecfg = config['notifications']['email']
         if 'rcpt' in ecfg and 'from' in ecfg and not debug:
             subject = "[KIF] events triggered on %s" % ME
-            msg = TEMPLATE_EMAIL.format(whoami=whoami(), triggers=email_triggers, actions=email_actions)
+            msg = TEMPLATE_EMAIL.format(whoami=ME, triggers=email_triggers, actions=email_actions)
             asfpy.messaging.mail(sender=ecfg['from'], recipient=ecfg['rcpt'], subject=subject, message=msg)
 
 
