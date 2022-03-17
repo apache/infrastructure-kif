@@ -67,6 +67,7 @@ rules:
         # Ignore a subset of jenkins processes
         # including the slave jar and the remote master ssh connection
         ignorematch:
+            - agent.jar
             - remoting.jar
             - slave.jar
             - sshd
