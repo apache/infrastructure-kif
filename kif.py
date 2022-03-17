@@ -43,7 +43,7 @@ GB = (2 ** 30)
 TB = (2 ** 40)
 
 # Helper func
-def who_am_i():
+def whoami():
     """Returns the FQDN of the box the program runs on"""
     try:
         # Get local hostname (what you see in the terminal)
@@ -68,7 +68,7 @@ def who_am_i():
     return socket.getfqdn()
 
 # hostname, pid file etc
-ME = who_am_i()
+ME = whoami()
 TEMPLATE_EMAIL = open("email_template.txt", "r").read()
 # Default to checking triggers every N seconds.
 DEFAULT_INTERVAL = 300
