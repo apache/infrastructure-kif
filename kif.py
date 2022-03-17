@@ -482,7 +482,7 @@ def run_actions(config, actions, debug=False):
         ecfg = config['notifications']['email']
         if 'rcpt' in ecfg and 'from' in ecfg and not debug:
             subject = "[KIF] events triggered on %s" % ME
-            msg = TEMPLATE_EMAIL.format(whoami=ME, triggers=email_triggers, actions=email_actions)
+            msg = TEMPLATE_EMAIL.format(whoami=whoami(), triggers=email_triggers, actions=email_actions)
             asfpy.messaging.mail(sender=ecfg['from'], recipient=ecfg['rcpt'], subject=subject, message=msg)
 
 
