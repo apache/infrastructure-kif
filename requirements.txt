@@ -1,4 +1,4 @@
 requests>=2.23.0
-asfpy>=0.20
+asfpy>=0.35
 psutil>=5.7.0
 PyYAML>=5.3.1
