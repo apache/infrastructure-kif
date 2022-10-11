@@ -55,6 +55,16 @@ rules:
             maxage:      30m
         kill:           true
         killwith: 9
+    
+    staged_git_frozen:
+        host_must_match:  "(staging-vm-he-de|tlpserver-he-fi).apache.org"
+        description:    'Git checkouts stuck on tlpserver-he-fi'
+        procid:         '/usr/lib/git-core/git-remote-https'
+        triggers:
+            maxage:      30m
+        kill:           true
+        killwith: 9
+
 
     jenkins_node_hung_processes:
         host_must_match:  "asf9\\d+.gq1.ygridcore.net"
