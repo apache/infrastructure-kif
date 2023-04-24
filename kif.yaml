@@ -56,6 +56,16 @@ rules:
         kill:           true
         killwith: 9
     
+    gitcorezombies:
+        host_must_match:  "gitbox2-he-fi.apache.org"
+        description:    'Git core procs that are hanging on gitbox'
+        procid:         '/usr/lib/git-core/git-http-backend'
+        triggers:
+            state:      'zombie'
+            maxage:     12h
+        kill:           true
+        killwith:       9
+    
     staged_git_frozen:
         host_must_match:  "(staging-vm-he-de|tlpserver-he-fi).apache.org"
         description:    'Git checkouts stuck on tlpserver-he-fi'
