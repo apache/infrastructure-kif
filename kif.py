@@ -181,7 +181,7 @@ def checkTriggers(id, info, triggers, dead=False):
                 maxmem = value
                 cmem = info.mem
                 cvar = ' bytes'
-            lstr = "      - %s: '%s' is using %u%s memory, max allowed is %u%s" % (
+            lstr = "      - %s: '%s' is using %d%s memory, max allowed is %d%s" % (
             id, info.command, cmem + 0.5, cvar, maxmem + 0.5, cvar)
             print(lstr)
             if cmem > maxmem:
@@ -192,7 +192,7 @@ def checkTriggers(id, info, triggers, dead=False):
         if trigger == 'maxfds':
             maxfds = int(value)
             cfds = info.fds
-            lstr = "      - %s: '%s' is using %u FDs, max allowed is %u" % (id, info.command, cfds, value)
+            lstr = "      - %s: '%s' is using %d FDs, max allowed is %d" % (id, info.command, cfds, value)
             print(lstr)
             if cfds > maxfds:
                 print("    - Trigger fired!")
@@ -202,7 +202,7 @@ def checkTriggers(id, info, triggers, dead=False):
         if trigger == 'maxconns':
             maxconns = int(value)
             ccons = info.conns
-            lstr = "      - %s: '%s' is using %u connections, max allowed is %u" % (id, info.command, ccons, value)
+            lstr = "      - %s: '%s' is using %d connections, max allowed is %d" % (id, info.command, ccons, value)
             print(lstr)
             if ccons > maxconns:
                 print("    - Trigger fired!")
@@ -212,7 +212,7 @@ def checkTriggers(id, info, triggers, dead=False):
         if trigger == 'maxlocalconns':
             maxconns = int(value)
             ccons = info.conns_local
-            lstr = "      - %s: '%s' is using %u LAN connections, max allowed is %u" % (id, info.command, ccons, value)
+            lstr = "      - %s: '%s' is using %d LAN connections, max allowed is %d" % (id, info.command, ccons, value)
             print(lstr)
             if ccons > maxconns:
                 print("    - Trigger fired!")
@@ -239,7 +239,7 @@ def checkTriggers(id, info, triggers, dead=False):
             else:
                 maxage = int(value)
                 cage = info.age
-            lstr = "      - %s: '%s' is %u seconds old, max allowed is %u" % (id, info.command, cage, maxage)
+            lstr = "      - %s: '%s' is %d seconds old, max allowed is %d" % (id, info.command, cage, maxage)
             print(lstr)
             if cage > maxage:
                 print("    - Trigger fired!")
@@ -301,19 +301,19 @@ def scan_for_triggers(config):
                         try:
                             ppid = int(open(rule['ignorepidfile']).read())
                             if ppid == xpid:
-                                # print("Ignoring %u, matches pid file %s!" % (ppid, rule['ignorepidfile']))
+                                # print("Ignoring %d, matches pid file %s!" % (ppid, rule['ignorepidfile']))
                                 addit = False
                         except Exception as err:
                             print(err)
                     if 'ignorematch' in rule:
                         ignm = rule['ignorematch']
                         if isinstance(ignm, str) and ignm in cmdstring:
-                            # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
+                            # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
                             addit = False
                         elif isinstance(ignm, list):
                             for line in ignm:
                                 if line in cmdstring:
-                                    # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, line))
+                                    # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, line))
                                     addit = False
                                     break
                     if addit:
@@ -334,19 +334,19 @@ def scan_for_triggers(config):
                         try:
                             ppid = int(open(rule['ignorepidfile']).read())
                             if ppid == xpid:
-                                # print("Ignoring %u, matches pid file %s!" % (ppid, rule['ignorepidfile']))
+                                # print("Ignoring %d, matches pid file %s!" % (ppid, rule['ignorepidfile']))
                                 addit = False
                         except Exception as err:
                             print(err)
                     if 'ignorematch' in rule:
                         ignm = rule['ignorematch']
                         if isinstance(ignm, str) and ignm in cmdstring:
-                            # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
+                            # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
                             addit = False
                         elif isinstance(ignm, list):
                             for line in ignm:
                                 if line in cmdstring:
-                                    # print("Ignoring %u, matches ignorematch directive %s!" % (xpid, line))
+                                    # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, line))
                                     addit = False
                                     break
                     if addit:
@@ -355,7 +355,7 @@ def scan_for_triggers(config):
         # If proc is running, analyze it
         analysis = ProcessInfo()  # no pid. accumulator.
         for pid in pids:
-            # print("  - Found process at PID %u" % pid)
+            # print("  - Found process at PID %d" % pid)
 
             try:
                 # Get all relevant data from this PID
@@ -385,7 +385,7 @@ def scan_for_triggers(config):
                         action['trigger'] = err
                         actions.append(action)
             except:
-                print("Could not analyze proc %u, bailing!" % pid)
+                print("Could not analyze proc %d, bailing!" % pid)
                 continue
         if len(pids) > 0:
             # If combined trigger test, run it now
@@ -458,10 +458,10 @@ def run_actions(config, actions, debug=False):
             if action.get('notify', 'email') in [None, 'email']:
                 email_actions += "\n"
         for pid, sig in action['kills'].items():
-            print("- KILL PID %u with sig %u" % (pid, sig))
-            rloutput += "- KILL PID %u with sig %u" % (pid, sig)
+            print("- KILL PID %d with sig %d" % (pid, sig))
+            rloutput += "- KILL PID %d with sig %d" % (pid, sig)
             if action.get('notify', 'email') in [None, 'email']:
-                email_actions += "- KILL PID %u with sig %u" % (pid, sig)
+                email_actions += "- KILL PID %d with sig %d" % (pid, sig)
             if not debug:
                 try:
                     os.kill(pid, sig)
@@ -476,7 +476,7 @@ def run_actions(config, actions, debug=False):
             if action.get('notify', 'email') in [None, 'email']:
                 email_actions += "\n"
             goods += 1
-        print("%u calls succeeded, %u failed." % (goods, bads))
+        print("%d calls succeeded, %d failed." % (goods, bads))
 
     if email_actions and 'notifications' in config and 'email' in config['notifications']:
         ecfg = config['notifications']['email']
