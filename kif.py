@@ -151,7 +151,7 @@ def checkTriggers(id, info, triggers, dead=False):
     # if len(triggers) > 0:
         # print("  - Checking triggers:")
     for trigger, value in triggers.items():
-        # print("    - Checking against trigger %s" % trigger)
+        # print(f"    - Checking against trigger {trigger}")
 
         # maxmemory: Process can max use N amount of memory or it triggers
         if trigger == 'maxmemory':
@@ -181,8 +181,7 @@ def checkTriggers(id, info, triggers, dead=False):
                 maxmem = value
                 cmem = info.mem
                 cvar = ' bytes'
-            lstr = "      - %s: '%s' is using %d%s memory, max allowed is %d%s" % (
-            id, info.command, cmem + 0.5, cvar, maxmem + 0.5, cvar)
+            lstr = f"      - {id}: '{info.command}' is using {cmem + 0.5}{cvar} memory, max allowed is {maxmem + 0.5}{cvar}"
             print(lstr)
             if cmem > maxmem:
                 print("    - Trigger fired!")
@@ -192,7 +191,7 @@ def checkTriggers(id, info, triggers, dead=False):
         if trigger == 'maxfds':
             maxfds = int(value)
             cfds = info.fds
-            lstr = "      - %s: '%s' is using %d FDs, max allowed is %d" % (id, info.command, cfds, value)
+            lstr = f"      - {id}: '{info.command}' is using {cfds} FDs, max allowed is {value}"
             print(lstr)
             if cfds > maxfds:
                 print("    - Trigger fired!")
@@ -202,7 +201,7 @@ def checkTriggers(id, info, triggers, dead=False):
         if trigger == 'maxconns':
             maxconns = int(value)
             ccons = info.conns
-            lstr = "      - %s: '%s' is using %d connections, max allowed is %d" % (id, info.command, ccons, value)
+            lstr = f"      - {id}: '{info.command}' is using {ccons} connections, max allowed is {value}"
             print(lstr)
             if ccons > maxconns:
                 print("    - Trigger fired!")
@@ -212,7 +211,7 @@ def checkTriggers(id, info, triggers, dead=False):
         if trigger == 'maxlocalconns':
             maxconns = int(value)
             ccons = info.conns_local
-            lstr = "      - %s: '%s' is using %d LAN connections, max allowed is %d" % (id, info.command, ccons, value)
+            lstr = f"      - {id}: '{info.command}' is using {ccons} LAN connections, max allowed is {value}"
             print(lstr)
             if ccons > maxconns:
                 print("    - Trigger fired!")
@@ -239,7 +238,7 @@ def checkTriggers(id, info, triggers, dead=False):
             else:
                 maxage = int(value)
                 cage = info.age
-            lstr = "      - %s: '%s' is %d seconds old, max allowed is %d" % (id, info.command, cage, maxage)
+            lstr = f"      - {id}: '{info.command}' is {cage} seconds old, max allowed is {maxage}"
             print(lstr)
             if cage > maxage:
                 print("    - Trigger fired!")
@@ -248,7 +247,7 @@ def checkTriggers(id, info, triggers, dead=False):
         # state: kill processes in a specific state (zombie etc)
         if trigger == 'state':
             cstate = info.state
-            lstr = "      - %s: '%s' is in state '%s'" % (id, info.command, cstate)
+            lstr = f"      - {id}: '{info.command}' is in state '{cstate}'"
             print(lstr)
             if cstate == value:
                 print("    - Trigger fired!")
@@ -262,7 +261,7 @@ def scan_for_triggers(config):
 
     # For each rule..
     for id, rule in config['rules'].items():
-        # print("- Running rule %s" % id)
+        # print(f"- Running rule {id}")
         # Is this process running here?
         pids = []
         if 'host_must_match' in rule:
@@ -275,7 +274,7 @@ def scan_for_triggers(config):
                 continue
         if 'procid' in rule:
             procid = rule['procid']
-            # print("  - Checking for process %s" % procid)
+            # print(f"  - Checking for process {procid}")
             for xpid, cmdline in procs.items():
                 cmdstring = " ".join(cmdline)
                 addit = False
@@ -301,19 +300,19 @@ def scan_for_triggers(config):
                         try:
                             ppid = int(open(rule['ignorepidfile']).read())
                             if ppid == xpid:
-                                # print("Ignoring %d, matches pid file %s!" % (ppid, rule['ignorepidfile']))
+                                # print(f"Ignoring {ppid}, matches pid file {rule['ignorepidfile']}!")
                                 addit = False
                         except Exception as err:
                             print(err)
                     if 'ignorematch' in rule:
                         ignm = rule['ignorematch']
                         if isinstance(ignm, str) and ignm in cmdstring:
-                            # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
+                            # print(f"Ignoring {xpid}, matches ignorematch directive {rule['ignorematch']}!")
                             addit = False
                         elif isinstance(ignm, list):
                             for line in ignm:
                                 if line in cmdstring:
-                                    # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, line))
+                                    # print(f"Ignoring {xpid}, matches ignorematch directive {line}!")
                                     addit = False
                                     break
                     if addit:
@@ -334,19 +333,19 @@ def scan_for_triggers(config):
                         try:
                             ppid = int(open(rule['ignorepidfile']).read())
                             if ppid == xpid:
-                                # print("Ignoring %d, matches pid file %s!" % (ppid, rule['ignorepidfile']))
+                                # print(f"Ignoring {ppid}, matches pid file {rule['ignorepidfile']}!")
                                 addit = False
                         except Exception as err:
                             print(err)
                     if 'ignorematch' in rule:
                         ignm = rule['ignorematch']
                         if isinstance(ignm, str) and ignm in cmdstring:
-                            # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, rule['ignorematch']))
+                            # print(f"Ignoring {xpid}, matches ignorematch directive {rule['ignorematch']}!")
                             addit = False
                         elif isinstance(ignm, list):
                             for line in ignm:
                                 if line in cmdstring:
-                                    # print("Ignoring %d, matches ignorematch directive %s!" % (xpid, line))
+                                    # print(f"Ignoring {xpid}, matches ignorematch directive {line}!")
                                     addit = False
                                     break
                     if addit:
@@ -355,7 +354,7 @@ def scan_for_triggers(config):
         # If proc is running, analyze it
         analysis = ProcessInfo()  # no pid. accumulator.
         for pid in pids:
-            # print("  - Found process at PID %d" % pid)
+            # print(f"  - Found process at PID {pid}")
 
             try:
                 # Get all relevant data from this PID
@@ -385,7 +384,7 @@ def scan_for_triggers(config):
                         action['trigger'] = err
                         actions.append(action)
             except:
-                print("Could not analyze proc %d, bailing!" % pid)
+                print(f"Could not analyze proc {pid}, bailing!")
                 continue
         if len(pids) > 0:
             # If combined trigger test, run it now
@@ -426,16 +425,16 @@ def run_actions(config, actions, debug=False):
     for action in actions:
         triggered_total += 1
         print("Following triggers were detected:")
-        print("- %s" % action['trigger'])
+        print(f"- {action['trigger']}")
         if action.get('notify', 'email') in [None, 'email']:
-            email_triggers += "- %s\n" % action['trigger']
+            email_triggers += f"- {action['trigger']}\n"
         print("Running triggered commands:")
         rloutput = ""
         for item in action['runlist']:
-            print("- %s" % item)
-            rloutput += "- %s" % item
+            print(f"- {item)}"
+            rloutput += f"- {item}"
             if action.get('notify', 'email') in [None, 'email']:
-                email_actions += "- %s" % item
+                email_actions += f"- {item}"
             try:
                 if not debug:
                     subprocess.check_output(item, shell=True, stderr=subprocess.STDOUT)
@@ -449,19 +448,19 @@ def run_actions(config, actions, debug=False):
                         email_actions += " (disabled due to --debug)"
                 goods += 1
             except subprocess.CalledProcessError as e:
-                print("command failed: %s" % e.output)
-                rloutput += " (failed!: %s)" % e.output
+                print(f"command failed: {e.output}")
+                rloutput += f" (failed!: {e.output})"
                 if action.get('notify', 'email') in [None, 'email']:
-                    email_actions += " (failed!: %s)" % e.output
+                    email_actions += f" (failed!: {e.output})"
                 bads += 1
             rloutput += "\n"
             if action.get('notify', 'email') in [None, 'email']:
                 email_actions += "\n"
         for pid, sig in action['kills'].items():
-            print("- KILL PID %d with sig %d" % (pid, sig))
-            rloutput += "- KILL PID %d with sig %d" % (pid, sig)
+            print(f"- KILL PID {pid} with sig {sig}")
+            rloutput += f"- KILL PID {}pid with sig {sig}"
             if action.get('notify', 'email') in [None, 'email']:
-                email_actions += "- KILL PID %d with sig %d" % (pid, sig)
+                email_actions += f"- KILL PID {pid} with sig {sig}"
             if not debug:
                 try:
                     os.kill(pid, sig)
@@ -476,12 +475,12 @@ def run_actions(config, actions, debug=False):
             if action.get('notify', 'email') in [None, 'email']:
                 email_actions += "\n"
             goods += 1
-        print("%d calls succeeded, %d failed." % (goods, bads))
+        print(f"{goods} calls succeeded, {bads} failed.")
 
     if email_actions and 'notifications' in config and 'email' in config['notifications']:
         ecfg = config['notifications']['email']
         if 'rcpt' in ecfg and 'from' in ecfg and not debug:
-            subject = "[KIF] events triggered on %s" % ME
+            subject = f"[KIF] events triggered on {ME}"
             msg = TEMPLATE_EMAIL.format(ME=who_am_i(), triggers=email_triggers, actions=email_actions)
             asfpy.messaging.mail(sender=ecfg['from'], recipient=ecfg['rcpt'], subject=subject, message=msg)
 
