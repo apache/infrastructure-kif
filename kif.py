@@ -431,7 +431,7 @@ def run_actions(config, actions, debug=False):
         print("Running triggered commands:")
         rloutput = ""
         for item in action['runlist']:
-            print(f"- {item)}")
+            print(f"- {item}")
             rloutput += f"- {item}"
             if action.get('notify', 'email') in [None, 'email']:
                 email_actions += f"- {item}"
