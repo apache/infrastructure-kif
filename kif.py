@@ -458,7 +458,7 @@ def run_actions(config, actions, debug=False):
                 email_actions += "\n"
         for pid, sig in action['kills'].items():
             print(f"- KILL PID {pid} with sig {sig}")
-            rloutput += f"- KILL PID {}pid with sig {sig}"
+            rloutput += f"- KILL PID {pid} with sig {sig}"
             if action.get('notify', 'email') in [None, 'email']:
                 email_actions += f"- KILL PID {pid} with sig {sig}"
             if not debug:
